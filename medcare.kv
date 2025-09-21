@@ -1,3 +1,242 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import dp kivy.metrics.dp
+#:import icon_plus_sign_outline_circle fontawesome.icon('fa-plus-circle')
+
+<BaseScreen>:
+canvas.before:
+Color:
+rgba: 0.96, 0.96, 0.96, 1  # Light gray background
+Rectangle:
+pos: self.pos
+size: self.size
+
+RoundedImage@Image:
+source: "https://placehold.co/100x100"
+size_hint: None, None
+size: dp(60), dp(60)
+canvas.before:
+Color:
+rgba: 0.9, 0.95, 0.9, 1
+Rectangle:
+size: self.size
+pos: self.pos
+texture: self.texture
+# Border for a softer look
+group: 'border'
+# No need for a custom shader for simple rounded corners in Kivy, use texture
+# Here we'll just have a placeholder since Kivy doesn't have a simple rounded image widget.
+
+MedicineCard@BoxLayout:
+orientation: 'horizontal'
+size_hint_y: None
+height: dp(90)
+padding: dp(15)
+spacing: dp(15)
+
+canvas.before:
+    Color:
+        rgba: 1, 1, 1, 1
+    RoundedRectangle:
+        pos: self.pos
+        size: self.size
+        radius: [dp(20),]
+
+Image:
+    source: "https://placehold.co/60x60" # Placeholder for medicine icon
+    size_hint: None, None
+    size: dp(60), dp(60)
+    canvas.before:
+        Color:
+            rgba: 0.8, 0.9, 0.8, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(15),]
+
+BoxLayout:
+    orientation: 'vertical'
+    spacing: dp(5)
+    
+    Label:
+        text: root.name
+        font_size: dp(18)
+        bold: True
+        color: 0.2, 0.2, 0.2, 1
+        text_size: self.size
+        halign: 'left'
+        valign: 'bottom'
+    
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            text: f"${root.price}"
+            font_size: dp(16)
+            color: 0.3, 0.7, 0.3, 1  # Green price
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+        Label:
+            text: f"${root.old_price}"
+            font_size: dp(14)
+            color: 0.5, 0.5, 0.5, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            markup: True
+            # Strikethrough for the old price
+            text: '[s]{}[/s]'.format(root.old_price) if root.old_price else ''
+
+BoxLayout:
+    size_hint_x: None
+    width: dp(80)
+    orientation: 'vertical'
+    
+    Label:
+        text: '♥'  # Placeholder for heart icon
+        font_size: dp(25)
+        color: 0.8, 0.8, 0.8, 1
+        size_hint_y: 0.5
+    
+    Label:
+        text: '+ Add'
+        font_size: dp(14)
+        color: 0.2, 0.6, 0.2, 1
+        size_hint_y: 0.5
+        halign: 'right'
+        valign: 'top'
+
+BottomNavBar@BoxLayout:
+orientation: 'horizontal'
+size_hint_y: None
+height: dp(70)
+spacing: dp(10)
+padding: dp(10)
+canvas.before:
+Color:
+rgba: 1, 1, 1, 1
+RoundedRectangle:
+pos: self.pos
+size: self.size
+radius: [dp(20), dp(20), 0, 0]
+
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        text: 'Home'
+        font_size: dp(12)
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        text: 'Cart'
+        font_size: dp(12)
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        text: 'Profile'
+        font_size: dp(12)
+
+<HomeScreen>:
+FloatLayout:
+# Top search and heading section
+BoxLayout:
+orientation: 'vertical'
+size_hint_y: None
+height: dp(200)
+padding: dp(25)
+spacing: dp(20)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            Label:
+                text: 'MedCare'
+                font_size: dp(28)
+                bold: True
+                color: 0.2, 0.6, 0.2, 1
+        
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            TextInput:
+                hint_text: 'Find your medicine'
+                multiline: False
+                size_hint_x: 0.8
+                background_color: 0.9, 0.9, 0.9, 1
+                foreground_color: 0.4, 0.4, 0.4, 1
+                font_size: dp(16)
+                padding: [dp(15), dp(15), dp(15), dp(15)]
+                background_normal: ''
+                background_active: ''
+                canvas.before:
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(15),]
+
+            Button:
+                text: '🔎'
+                font_size: dp(24)
+                size_hint_x: 0.2
+                background_color: 0.2, 0.6, 0.2, 1
+                background_normal: ''
+                background_active: ''
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.6, 0.2, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(15),]
+
+        Label:
+            text: 'Available Medicines'
+            font_size: dp(22)
+            bold: True
+            color: 0.2, 0.2, 0.2, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+
+    # ScrollView for the list of medicines
+    ScrollView:
+        pos_hint: {'top': 0.7, 'left': 0}
+        size_hint: 1, 0.65
+        
+        GridLayout:
+            id: medicine_list
+            cols: 1
+            spacing: dp(15)
+            padding: [dp(25), 0, dp(25), dp(80)]
+            size_hint_y: None
+            height: self.minimum_height
+            
+            # Dynamic creation of medicine cards from the Python ListProperty
+            # Each item in the list will create a MedicineCard
+            canvas.before:
+                Color:
+                    rgba: 0.96, 0.96, 0.96, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            # Loop through the medicine_data list to create cards
+            MedicineCard:
+                name: item.get('name', 'N/A')
+                price: item.get('price', '0.00')
+                old_price: item.get('old_price', '')
+                on_release: root.manager.get_screen('cart').add_to_cart(item)
+                
+            
+    # Bottom navigation bar
+    BottomNavBar:
+        pos_hint: {'bottom': 1}
+        size_hint_y: None
+        height: dp(70)
+
 #:kivy 2.1.0
 
 <WelcomeScreen>:
