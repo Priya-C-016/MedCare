@@ -25,4 +25,9 @@ This project demonstrates **full-stack app development**, **mobile-friendly UI**
 
 ---
 
+![Home Screen](images/Dashboard.png)
+
+![Home Screen](images/medicine-page.png)
+
+![Home Screen](images/payment-image.png)
 
