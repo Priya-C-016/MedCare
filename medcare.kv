@@ -1,0 +1,107 @@
+#:kivy 2.1.0
+
+<WelcomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 50
+        Label:
+            text: "Welcome to MedCare"
+            font_size: 32
+        Button:
+            text: "Login"
+            on_release: root.manager.current = "login"
+        Button:
+            text: "Sign Up"
+            on_release: root.manager.current = "signup"
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 50
+        Label:
+            text: "Login"
+            font_size: 24
+        TextInput:
+            id: email
+            hint_text: "Email"
+            multiline: False
+        TextInput:
+            id: password
+            hint_text: "Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Login"
+            on_release: root.login_user(email.text, password.text)
+        Button:
+            text: "Back"
+            on_release: root.manager.current = "welcome"
+
+<SignupScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 50
+        Label:
+            text: "Sign Up"
+            font_size: 24
+        TextInput:
+            id: email
+            hint_text: "Email"
+            multiline: False
+        TextInput:
+            id: password
+            hint_text: "Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Sign Up"
+            on_release: root.signup_user(email.text, password.text)
+        Button:
+            text: "Back"
+            on_release: root.manager.current = "welcome"
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        Label:
+            text: "Medicines"
+            font_size: 24
+        ScrollView:
+            GridLayout:
+                id: medicine_list
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 60
+                row_force_default: True
+                spacing: 5
+                # Dynamically add buttons for each medicine
+                Button:
+                    text: "Sample Medicine"
+                    on_release: app.root.get_screen('cart').add_to_cart({'name':'Sample Medicine'})
+
+<CartScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        Label:
+            text: "Cart"
+            font_size: 24
+        ScrollView:
+            GridLayout:
+                id: cart_list
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+        Button:
+            text: "Place Order"
+            on_release: root.place_order()
+        Button:
+            text: "Back to Home"
+            on_release: root.manager.current = "home"
